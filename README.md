@@ -1,0 +1,1 @@
+# Gemini2.5-pro-roo-code
