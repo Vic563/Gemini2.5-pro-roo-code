@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { useDropzone } from 'react-dropzone';
 import './MessageInput.css';
 
@@ -13,14 +13,12 @@ const MessageInput = ({
   placeholder
 }) => {
   const textAreaRef = useRef(null);
-  const [isDragOver, setIsDragOver] = useState(false);
 
   // Configure dropzone for file drag and drop
   const {
     getRootProps,
     getInputProps,
-    isDragActive,
-    open: openFileDialog
+    isDragActive
   } = useDropzone({
     onDrop: (acceptedFiles) => {
       if (acceptedFiles.length > 0) {

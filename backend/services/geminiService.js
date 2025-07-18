@@ -1,30 +1,30 @@
 const axios = require('axios');
+const { getConfig } = require('../config');
+const { ApiError } = require('../utils/errorHandler');
 
 class GeminiService {
   constructor() {
-    this.apiKey = process.env.GEMINI_API_KEY;
-    this.apiUrl = process.env.GEMINI_API_URL || 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent';
-    this.maxRetries = 3;
-    this.retryDelay = 1000; // 1 second
+    this.config = getConfig('gemini');
+    this.chatConfig = getConfig('chat');
   }
 
   async generateContent(messages, attachments = []) {
-    if (!this.apiKey) {
-      throw new Error('Gemini API key not configured');
+    if (!this.config.apiKey) {
+      throw new ApiError('Gemini API key not configured', 500);
     }
 
     const payload = this.formatRequest(messages, attachments);
     
-    for (let attempt = 1; attempt <= this.maxRetries; attempt++) {
+    for (let attempt = 1; attempt <= this.config.maxRetries; attempt++) {
       try {
         const response = await axios.post(
-          `${this.apiUrl}?key=${this.apiKey}`,
+          `${this.config.apiUrl}?key=${this.config.apiKey}`,
           payload,
           {
             headers: {
               'Content-Type': 'application/json',
             },
-            timeout: 30000, // 30 second timeout
+            timeout: this.config.timeout,
           }
         );
 
@@ -32,12 +32,12 @@ class GeminiService {
       } catch (error) {
         console.error(`Gemini API attempt ${attempt} failed:`, error.response?.data || error.message);
         
-        if (attempt === this.maxRetries) {
+        if (attempt === this.config.maxRetries) {
           throw this.handleError(error);
         }
 
         // Wait before retry with exponential backoff
-        await this.sleep(this.retryDelay * Math.pow(2, attempt - 1));
+        await this.sleep(this.config.retryDelay * Math.pow(2, attempt - 1));
       }
     }
   }
@@ -81,10 +81,10 @@ class GeminiService {
     return {
       contents: contents,
       generationConfig: {
-        temperature: 0.7,
+        temperature: this.chatConfig.defaultTemperature,
         topK: 40,
         topP: 0.95,
-        maxOutputTokens: 8192,
+        maxOutputTokens: this.chatConfig.maxOutputTokens,
       },
       safetySettings: [
         {
@@ -131,7 +131,7 @@ class GeminiService {
       };
     } catch (error) {
       console.error('Error formatting Gemini response:', error);
-      throw new Error('Failed to process Gemini API response');
+      throw new ApiError('Failed to process Gemini API response', 500, error);
     }
   }
 
@@ -142,29 +142,29 @@ class GeminiService {
       
       switch (status) {
         case 400:
-          return new Error(`Invalid request: ${data.error?.message || 'Bad request'}`);
+          return new ApiError(`Invalid request: ${data.error?.message || 'Bad request'}`, 400, error);
         case 401:
-          return new Error('Invalid API key or unauthorized access');
+          return new ApiError('Invalid API key or unauthorized access', 401, error);
         case 403:
-          return new Error('API access forbidden or quota exceeded');
+          return new ApiError('API access forbidden or quota exceeded', 403, error);
         case 429:
-          return new Error('Rate limit exceeded. Please try again later.');
+          return new ApiError('Rate limit exceeded. Please try again later.', 429, error);
         case 500:
-          return new Error('Gemini API server error. Please try again later.');
+          return new ApiError('Gemini API server error. Please try again later.', 500, error);
         default:
-          return new Error(`Gemini API error (${status}): ${data.error?.message || 'Unknown error'}`);
+          return new ApiError(`Gemini API error (${status}): ${data.error?.message || 'Unknown error'}`, status, error);
       }
     }
     
     if (error.code === 'ECONNABORTED') {
-      return new Error('Request timeout. Please try again.');
+      return new ApiError('Request timeout. Please try again.', 408, error);
     }
     
     if (error.code === 'ENOTFOUND' || error.code === 'ECONNREFUSED') {
-      return new Error('Network error. Please check your internet connection.');
+      return new ApiError('Network error. Please check your internet connection.', 503, error);
     }
     
-    return new Error(`Unexpected error: ${error.message}`);
+    return new ApiError(`Unexpected error: ${error.message}`, 500, error);
   }
 
   sleep(ms) {
@@ -182,7 +182,7 @@ class GeminiService {
       };
 
       const response = await axios.post(
-        `${this.apiUrl}?key=${this.apiKey}`,
+        `${this.config.apiUrl}?key=${this.config.apiKey}`,
         testPayload,
         {
           headers: { 'Content-Type': 'application/json' },

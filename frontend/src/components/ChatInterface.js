@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useChat } from '../context/ChatContext';
-import MessageBubble from './MessageBubble';
 import MessageInput from './MessageInput';
-import FileAttachment from './FileAttachment';
-import TypingIndicator from './TypingIndicator';
+import ChatHeader from './Chat/ChatHeader';
+import ErrorBanner from './Chat/ErrorBanner';
+import AttachmentsPreview from './Chat/AttachmentsPreview';
+import MessagesList from './Chat/MessagesList';
 import './ChatInterface.css';
 
 const ChatInterface = () => {
@@ -65,7 +66,7 @@ const ChatInterface = () => {
     }
   };
 
-  const dismissError = () => {
+  const handleDismissError = () => {
     setError(null);
   };
 
@@ -73,92 +74,27 @@ const ChatInterface = () => {
     <div className="chat-interface">
       <div className="chat-container">
         {/* Chat Header */}
-        <div className="chat-header">
-          <div className="chat-title">
-            <h2>💬 Chat with Assistant</h2>
-            <span className="message-count">
-              {messages.length} message{messages.length !== 1 ? 's' : ''}
-            </span>
-          </div>
-          
-          <div className="chat-actions">
-            <button 
-              onClick={handleClearChat}
-              className="clear-chat-btn"
-              disabled={messages.length === 0}
-              title="Clear conversation"
-            >
-              🗑️ Clear
-            </button>
-          </div>
-        </div>
+        <ChatHeader 
+          messageCount={messages.length}
+          onClearChat={handleClearChat}
+        />
 
         {/* Error Banner */}
-        {error && (
-          <div className="error-banner">
-            <div className="error-content">
-              <span className="error-icon">⚠️</span>
-              <span className="error-message">{error}</span>
-              <button onClick={dismissError} className="error-dismiss">
-                ✕
-              </button>
-            </div>
-          </div>
-        )}
+        <ErrorBanner 
+          error={error}
+          onDismiss={handleDismissError}
+        />
 
         {/* File Attachments Display */}
-        {attachments.length > 0 && (
-          <div className="attachments-preview">
-            <h4>📎 Attached Files ({attachments.length})</h4>
-            <div className="attachments-list">
-              {attachments.map((attachment) => (
-                <FileAttachment 
-                  key={attachment.id} 
-                  attachment={attachment}
-                  showContent={false}
-                />
-              ))}
-            </div>
-          </div>
-        )}
+        <AttachmentsPreview attachments={attachments} />
 
         {/* Messages Area */}
         <div className="messages-area">
-          {messages.length === 0 ? (
-            <div className="welcome-message">
-              <div className="welcome-content">
-                <div className="welcome-icon">🤖</div>
-                <h3>Welcome to Assistant!</h3>
-                <p>Start a conversation by typing a message or uploading a document for analysis.</p>
-                <div className="features-list">
-                  <div className="feature">
-                    <span className="feature-icon">📄</span>
-                    <span>Upload PDF, DOC, or TXT files</span>
-                  </div>
-                  <div className="feature">
-                    <span className="feature-icon">💬</span>
-                    <span>Natural conversation</span>
-                  </div>
-                  <div className="feature">
-                    <span className="feature-icon">🔍</span>
-                    <span>Document analysis</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="messages-list">
-              {messages.map((message) => (
-                <MessageBubble key={message.id} message={message} />
-              ))}
-              
-              {/* Typing Indicator */}
-              {isTyping && <TypingIndicator />}
-              
-              {/* Scroll anchor */}
-              <div ref={messagesEndRef} />
-            </div>
-          )}
+          <MessagesList 
+            messages={messages}
+            isTyping={isTyping}
+            messagesEndRef={messagesEndRef}
+          />
         </div>
 
         {/* File Upload Progress */}
