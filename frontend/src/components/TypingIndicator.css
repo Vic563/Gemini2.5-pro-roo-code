@@ -1,0 +1,269 @@
+/* Typing Indicator Styles */
+.typing-indicator-container {
+  width: 100%;
+  display: flex;
+  margin-bottom: 1rem;
+  animation: slideInMessage 0.3s ease-out;
+}
+
+.typing-indicator-container.assistant {
+  justify-content: flex-start;
+}
+
+.typing-indicator {
+  max-width: 75%;
+  display: flex;
+  align-items: flex-end;
+  gap: 0.75rem;
+}
+
+.typing-avatar {
+  flex-shrink: 0;
+  margin-bottom: 0.5rem;
+}
+
+.ai-avatar {
+  font-size: 1.2rem;
+}
+
+.typing-bubble {
+  background: #4a5568;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  border-bottom-left-radius: 8px;
+  padding: 1rem 1.25rem;
+  position: relative;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 120px;
+}
+
+.typing-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: -8px;
+  width: 0;
+  height: 0;
+  border-right: 8px solid #4a5568;
+  border-bottom: 8px solid transparent;
+}
+
+.typing-dots {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.typing-dot {
+  width: 8px;
+  height: 8px;
+  background: #667eea;
+  border-radius: 50%;
+  animation: typingDot 1.4s ease-in-out infinite;
+}
+
+.typing-dot:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.typing-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+.typing-text {
+  font-size: 0.875rem;
+  color: #e2e8f0;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+/* Typing Animation */
+@keyframes typingDot {
+  0%, 60%, 100% {
+    transform: scale(1);
+    opacity: 0.4;
+  }
+  30% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}
+
+/* Slide in animation */
+@keyframes slideInMessage {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Pulse animation for the entire bubble */
+.typing-bubble {
+  animation: typingPulse 2s ease-in-out infinite;
+}
+
+@keyframes typingPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .typing-indicator {
+    max-width: 85%;
+  }
+  
+  .typing-bubble {
+    padding: 0.875rem 1rem;
+    border-radius: 16px;
+    border-bottom-left-radius: 6px;
+    min-width: 100px;
+  }
+  
+  .typing-bubble::after {
+    left: -6px;
+    border-right-width: 6px;
+    border-bottom-width: 6px;
+  }
+  
+  .typing-text {
+    font-size: 0.8rem;
+  }
+  
+  .typing-dot {
+    width: 7px;
+    height: 7px;
+  }
+}
+
+@media (max-width: 480px) {
+  .typing-indicator {
+    max-width: 95%;
+  }
+  
+  .typing-bubble {
+    padding: 0.75rem 0.875rem;
+    border-radius: 14px;
+    min-width: 90px;
+    gap: 0.5rem;
+  }
+  
+  .typing-text {
+    font-size: 0.75rem;
+  }
+  
+  .typing-dot {
+    width: 6px;
+    height: 6px;
+  }
+  
+  .ai-avatar {
+    font-size: 1.1rem;
+  }
+}
+
+/* Dark mode is now default - keeping for legacy support */
+@media (prefers-color-scheme: dark) {
+  .typing-bubble {
+    background: #4a5568;
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .typing-text {
+    color: #e2e8f0;
+  }
+  
+  .typing-bubble::after {
+    border-right-color: #4a5568;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .typing-bubble {
+    border: 2px solid #000;
+  }
+  
+  .typing-dot {
+    background: #000;
+  }
+  
+  .typing-text {
+    color: #000;
+    font-weight: 600;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .typing-dot {
+    animation: none;
+  }
+  
+  .typing-bubble {
+    animation: none;
+  }
+  
+  .typing-indicator-container {
+    animation: none;
+  }
+  
+  .typing-dot {
+    opacity: 0.7;
+  }
+}
+
+/* Focus and interaction states */
+.typing-indicator:hover .typing-bubble {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.typing-indicator:hover .typing-dot {
+  animation-duration: 1s;
+}
+
+/* Accessibility improvements */
+.typing-indicator {
+  role: "status";
+  aria-live: "polite";
+  aria-label: "AI is typing a response";
+}
+
+/* Custom variants */
+.typing-indicator.fast .typing-dot {
+  animation-duration: 1s;
+}
+
+.typing-indicator.slow .typing-dot {
+  animation-duration: 2s;
+}
+
+.typing-indicator.subtle .typing-bubble {
+  opacity: 0.8;
+}
+
+.typing-indicator.prominent .typing-bubble {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+  border-color: rgba(102, 126, 234, 0.2);
+}
+
+.typing-indicator.prominent .typing-dot {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+}

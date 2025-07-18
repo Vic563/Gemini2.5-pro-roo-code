@@ -1,0 +1,71 @@
+/* CSS Variables for Theming */
+:root {
+  /* Light mode colors (default) */
+  --chat-bg: #ffffff;
+  --header-bg: #f8f9fa;
+  --text-primary: #1a202c;
+  --text-secondary: #4a5568;
+  --text-light: #718096;
+  --border-color: rgba(0, 0, 0, 0.08);
+  --user-msg-bg: #d1e7ff;
+  --user-msg-border: rgba(0, 120, 255, 0.1);
+  --assistant-msg-bg: #f8f9fa;
+  --assistant-msg-border: rgba(0, 0, 0, 0.05);
+  --msg-text-color: #222;
+  --attachment-bg: rgba(0, 0, 0, 0.05);
+  --feature-bg: rgba(0, 0, 0, 0.05);
+  --feature-hover-bg: rgba(0, 0, 0, 0.1);
+  --code-bg: rgba(0, 0, 0, 0.05);
+  --scrollbar-track: rgba(0, 0, 0, 0.05);
+  --scrollbar-thumb: rgba(0, 0, 0, 0.2);
+  --scrollbar-thumb-hover: rgba(0, 0, 0, 0.3);
+}
+
+/* Dark mode colors */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --chat-bg: #2d2d2d;
+    --header-bg: #1f1f1f;
+    --text-primary: #e2e8f0;
+    --text-secondary: #a0aec0;
+    --text-light: #718096;
+    --border-color: rgba(255, 255, 255, 0.1);
+    --user-msg-bg: #1e3a5f;
+    --user-msg-border: rgba(59, 130, 246, 0.3);
+    --assistant-msg-bg: #374151;
+    --assistant-msg-border: rgba(255, 255, 255, 0.05);
+    --msg-text-color: #e2e8f0;
+    --attachment-bg: rgba(255, 255, 255, 0.1);
+    --feature-bg: rgba(255, 255, 255, 0.05);
+    --feature-hover-bg: rgba(255, 255, 255, 0.1);
+    --code-bg: rgba(255, 255, 255, 0.05);
+    --scrollbar-track: rgba(255, 255, 255, 0.05);
+    --scrollbar-thumb: rgba(255, 255, 255, 0.2);
+    --scrollbar-thumb-hover: rgba(255, 255, 255, 0.3);
+  }
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "kern" 1;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#root {
+  height: 100vh;
+  width: 100vw;
+}

@@ -1,0 +1,441 @@
+/* File Attachment Styles */
+.file-attachment {
+  background: #4a5568;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.file-attachment:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border-color: rgba(102, 126, 234, 0.5);
+}
+
+/* Attachment Header */
+.attachment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+}
+
+.file-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.file-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.file-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.file-name {
+  font-weight: 600;
+  color: #e2e8f0;
+  font-size: 0.9rem;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: 0.25rem;
+}
+
+.file-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+  color: #a0aec0;
+  flex-wrap: wrap;
+}
+
+.file-type {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.file-size,
+.word-count {
+  font-weight: 500;
+}
+
+/* Attachment Actions */
+.attachment-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.action-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.4rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  backdrop-filter: blur(5px);
+  color: #e2e8f0;
+}
+
+.action-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.expand-btn:hover {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: rgba(59, 130, 246, 0.3);
+  color: #3b82f6;
+}
+
+.remove-btn:hover {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+}
+
+/* Attachment Content */
+.attachment-content {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.content-preview {
+  position: relative;
+}
+
+.content-text {
+  background: rgba(26, 32, 44, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 0.75rem;
+  font-family: 'Monaco', 'Consolas', 'Courier New', monospace;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: #e2e8f0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-x: auto;
+  max-height: 200px;
+  overflow-y: auto;
+  margin: 0;
+}
+
+.toggle-content-btn {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(102, 126, 234, 0.3);
+}
+
+.toggle-content-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(102, 126, 234, 0.4);
+}
+
+/* Processing Status */
+.processing-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 8px;
+  color: #63b3ed;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-top: 0.75rem;
+}
+
+.processing-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(99, 179, 237, 0.3);
+  border-top: 2px solid #63b3ed;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* File Type Specific Colors */
+.file-attachment[data-file-type="pdf"] .file-icon {
+  color: #dc2626;
+}
+
+.file-attachment[data-file-type="txt"] .file-icon {
+  color: #059669;
+}
+
+.file-attachment[data-file-type="docx"] .file-icon,
+.file-attachment[data-file-type="doc"] .file-icon {
+  color: #2563eb;
+}
+
+.file-attachment[data-file-type="pdf"] .file-type {
+  background: linear-gradient(135deg, #dc2626, #991b1b);
+}
+
+.file-attachment[data-file-type="txt"] .file-type {
+  background: linear-gradient(135deg, #059669, #047857);
+}
+
+.file-attachment[data-file-type="docx"] .file-type,
+.file-attachment[data-file-type="doc"] .file-type {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .file-attachment {
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .attachment-header {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: flex-start;
+  }
+  
+  .file-info {
+    width: 100%;
+  }
+  
+  .attachment-actions {
+    align-self: flex-end;
+  }
+  
+  .file-meta {
+    gap: 0.5rem;
+  }
+  
+  .content-text {
+    font-size: 0.75rem;
+    padding: 0.5rem;
+    max-height: 150px;
+  }
+  
+  .action-btn {
+    min-width: 32px;
+    height: 32px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .file-attachment {
+    padding: 0.5rem;
+    border-radius: 10px;
+  }
+  
+  .file-icon {
+    font-size: 1.3rem;
+  }
+  
+  .file-name {
+    font-size: 0.85rem;
+  }
+  
+  .file-meta {
+    font-size: 0.7rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+  
+  .file-type {
+    padding: 0.15rem 0.4rem;
+    font-size: 0.65rem;
+  }
+  
+  .content-text {
+    font-size: 0.7rem;
+    padding: 0.4rem;
+    max-height: 120px;
+  }
+  
+  .toggle-content-btn {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.7rem;
+  }
+  
+  .processing-status {
+    padding: 0.5rem;
+    font-size: 0.8rem;
+  }
+  
+  .processing-spinner {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+/* Custom scrollbar for content */
+.content-text::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.content-text::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 2px;
+}
+
+.content-text::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+}
+
+.content-text::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Dark mode is now default - keeping for legacy support */
+@media (prefers-color-scheme: dark) {
+  .file-attachment {
+    background: #4a5568;
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .file-name {
+    color: #e2e8f0;
+  }
+  
+  .file-meta {
+    color: #a0aec0;
+  }
+  
+  .content-text {
+    background: rgba(26, 32, 44, 0.8);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #e2e8f0;
+  }
+  
+  .action-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #e2e8f0;
+  }
+  
+  .action-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .file-attachment {
+    border: 2px solid #000;
+  }
+  
+  .action-btn {
+    border: 1px solid #000;
+  }
+  
+  .content-text {
+    border: 1px solid #000;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .file-attachment,
+  .action-btn,
+  .toggle-content-btn {
+    transition: none;
+  }
+  
+  .processing-spinner {
+    animation: none;
+  }
+  
+  .file-attachment:hover {
+    transform: none;
+  }
+}
+
+/* Focus states for accessibility */
+.action-btn:focus {
+  outline: 2px solid rgba(102, 126, 234, 0.5);
+  outline-offset: 2px;
+}
+
+.toggle-content-btn:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 2px;
+}
+
+/* Animation for new attachments */
+.file-attachment {
+  animation: slideInAttachment 0.3s ease-out;
+}
+
+@keyframes slideInAttachment {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Error state */
+.file-attachment.error {
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.05);
+}
+
+.file-attachment.error .file-name {
+  color: #dc2626;
+}
+
+/* Success state */
+.file-attachment.success {
+  border-color: #10b981;
+  background: rgba(16, 185, 129, 0.05);
+}
+
+.file-attachment.success .file-type {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
