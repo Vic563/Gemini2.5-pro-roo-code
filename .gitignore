@@ -56,6 +56,7 @@ desktop.ini
 # Testing
 coverage/
 .nyc_output/
+test_refactoring.js
 
 # Temporary files
 *.tmp

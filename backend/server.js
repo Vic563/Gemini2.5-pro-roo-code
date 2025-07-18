@@ -5,10 +5,21 @@ const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 const bodyParser = require('body-parser');
 const path = require('path');
-require('dotenv').config();
+const fs = require('fs');
+
+// Import configuration and utilities
+const { config, validateConfig, isDevelopment } = require('./config');
+const { handleError } = require('./utils/errorHandler');
+
+// Validate configuration on startup
+try {
+  validateConfig();
+} catch (error) {
+  console.error('Configuration validation failed:', error.message);
+  process.exit(1);
+}
 
 const app = express();
-const PORT = process.env.PORT || 3001;
 
 // Import routes
 const chatRoutes = require('./routes/chat');
@@ -19,8 +30,8 @@ app.use(helmet());
 
 // Rate limiting
 const limiter = rateLimit({
-  windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000, // 15 minutes
-  max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100,
+  windowMs: config.rateLimit.windowMs,
+  max: config.rateLimit.maxRequests,
   message: 'Too many requests from this IP, please try again later.',
   standardHeaders: true,
   legacyHeaders: false,
@@ -29,23 +40,21 @@ app.use('/api', limiter);
 
 // Middleware
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' ? process.env.FRONTEND_URL : 'http://localhost:3000',
+  origin: config.security.corsOrigin,
   credentials: true
 }));
 
-app.use(morgan('combined'));
-app.use(bodyParser.json({ limit: '10mb' }));
-app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
+app.use(morgan(isDevelopment() ? 'dev' : 'combined'));
+app.use(bodyParser.json({ limit: config.request.bodyParserLimit }));
+app.use(bodyParser.urlencoded({ extended: true, limit: config.request.bodyParserLimit }));
 
 // Create uploads directory if it doesn't exist
-const fs = require('fs');
-const uploadDir = process.env.UPLOAD_DIR || 'uploads/';
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
+if (!fs.existsSync(config.upload.uploadDir)) {
+  fs.mkdirSync(config.upload.uploadDir, { recursive: true });
 }
 
 // Serve static files
-app.use('/uploads', express.static(path.join(__dirname, uploadDir)));
+app.use('/uploads', express.static(path.join(__dirname, config.upload.uploadDir)));
 
 // Routes
 app.use('/api/chat', chatRoutes);
@@ -61,21 +70,16 @@ app.get('/api/health', (req, res) => {
 });
 
 // Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ 
-    error: 'Something went wrong!', 
-    message: process.env.NODE_ENV === 'development' ? err.message : 'Internal server error'
-  });
-});
+app.use(handleError);
 
 // 404 handler
 app.use((req, res) => {
   res.status(404).json({ error: 'Route not found' });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-  console.log(`Environment: ${process.env.NODE_ENV}`);
-  console.log(`Upload directory: ${uploadDir}`);
+app.listen(config.server.port, () => {
+  console.log(`Server running on port ${config.server.port}`);
+  console.log(`Environment: ${config.server.nodeEnv}`);
+  console.log(`Upload directory: ${config.upload.uploadDir}`);
+  console.log(`API Key configured: ${config.gemini.apiKey ? 'Yes' : 'No'}`);
 });

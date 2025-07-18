@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# Gemini2.5-pro-roo-code
-=======
 # AI Chat Assistant with Gemini 2.5 Pro
 
 A modern AI chat application built with React and Express.js, featuring document analysis capabilities powered by Google's Gemini 2.5 Pro API.
@@ -360,4 +357,23 @@ For support and questions:
 - [ ] Conversation export functionality
 - [ ] Real-time collaboration features
 - [ ] Integration with more AI models
+
+## 🔧 Recent Refactoring (v1.1.0)
+
+This codebase has been comprehensively refactored to improve maintainability, organization, and code quality:
+
+### Key Improvements
+- **Centralized Configuration**: All environment variables and settings managed in `backend/config/`
+- **Standardized Error Handling**: Consistent error responses with `backend/utils/errorHandler.js`
+- **Component Organization**: Large components split into focused, reusable pieces
+- **Service Layer**: Business logic abstracted with `backend/services/conversationService.js`
+- **Constants Management**: Magic numbers and strings organized in `backend/constants/`
+
+### Code Quality Metrics
+- ChatInterface component: 62% line reduction (195 → 75 lines)
+- Chat routes: 52% line reduction (258 → 125 lines)
+- Improved maintainability and testability
+- Better separation of concerns
+
+See `REFACTORING_SUMMARY.md` for detailed information about the improvements.
 >>>>>>> 1d17294 (Initial commit)
