@@ -2,11 +2,23 @@ const axios = require('axios');
 const { getConfig } = require('../config');
 const { ApiError } = require('../utils/errorHandler');
 
+/**
+ * GeminiService - Handles interaction with Google Gemini API
+ * Provides AI content generation with retry logic and error handling
+ */
 class GeminiService {
   constructor() {
     this.config = getConfig('gemini');
     this.chatConfig = getConfig('chat');
   }
+
+  /**
+   * Generate content using Gemini API
+   * @param {Array} messages - Array of conversation messages
+   * @param {Array} attachments - Array of file attachments (optional)
+   * @returns {Promise<Object>} Response with content, finishReason, and usage
+   * @throws {ApiError} If API call fails
+   */
 
   async generateContent(messages, attachments = []) {
     if (!this.config.apiKey) {
@@ -42,6 +54,12 @@ class GeminiService {
     }
   }
 
+  /**
+   * Format request payload for Gemini API
+   * @param {Array} messages - Conversation messages
+   * @param {Array} attachments - File attachments
+   * @returns {Object} Formatted API request payload
+   */
   formatRequest(messages, attachments = []) {
     const contents = [];
     
@@ -107,6 +125,12 @@ class GeminiService {
     };
   }
 
+  /**
+   * Format Gemini API response
+   * @param {Object} response - Raw API response
+   * @returns {Object} Formatted response with content, finishReason, and usage
+   * @throws {ApiError} If response format is invalid
+   */
   formatResponse(response) {
     try {
       if (!response.candidates || response.candidates.length === 0) {
